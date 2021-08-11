@@ -6,12 +6,12 @@ const jwt = require('jsonwebtoken');
 const SALT_ROUNDS = +process.env.SALT_ROUNDS;
 const PRIV_KEY = process.env.PRIV_KEY;
 
-const signupUser = (req, res) => {
+const signup = (req, res) => {
   const { dbConn } = req;
   const { username, password } = req.body;
 
   if (!/^\w{6,20}$/.test(username)) return res.mk(0, 'Enter a valid Username!');
-  if (!/^.{8,}$/.test(password)) return res.mk((0, 'Enter a valid Password!'));
+  if (!/^.{8,}$/.test(password)) return res.mk(0, 'Enter a valid Password!');
 
   const sql = `
     SELECT COUNT(*) as user_exists
@@ -23,21 +23,21 @@ const signupUser = (req, res) => {
     if (err) return res.mk(0);
     if (user_exists) return res.mk(0, 'Username already taken!');
 
-    password = bcrypt.hashSync(password, SALT_ROUNDS);
+    const hashedPass = bcrypt.hashSync(password, SALT_ROUNDS);
 
     const sql = `
       INSERT INTO users (username, password)
       VALUES (?, ?)
     `;
 
-    dbConn.query(sql, [username, password], (err, { insertId }) => {
+    dbConn.query(sql, [username, hashedPass], (err, { insertId }) => {
       if (err) return res.mk(0);
 
-      const token = jwt.sign({ id: insertId }, PRIV_KEY);
+      const token = jwt.sign({ userId: insertId }, PRIV_KEY);
       res.cookie('loginToken', token);
       res.mk(1);
     });
   });
 };
 
-module.exports = signupUser;
+module.exports = signup;

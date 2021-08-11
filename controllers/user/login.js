@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const PRIV_KEY = process.env.PRIV_KEY;
 
-const loginUser = (req, res) => {
+const login = (req, res) => {
   const { dbConn } = req;
   const { username, password } = req.body;
 
@@ -23,10 +23,10 @@ const loginUser = (req, res) => {
 
     if (!passMatched) return res.mk(0, 'Username and Password does not match!');
 
-    const token = jwt.sign({ id: user.id }, PRIV_KEY);
+    const token = jwt.sign({ userId: user.id }, PRIV_KEY);
     res.cookie('loginToken', token);
-    res.json(mkRes(1));
+    res.mk(1);
   });
 };
 
-module.exports = loginUser;
+module.exports = login;

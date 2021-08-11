@@ -1,33 +1,18 @@
-// ------------------------
-// router
-
-const userRouter = require('express').Router();
-
-// ------------------------
-// middlewares
+const router = require('express').Router();
 
 const mkDbConn = require('../middlewares/mkDbConn');
-const validateLogin = require('../middlewares/validateLogin');
+const checkLogin = require('../middlewares/checkLogin');
 
-userRouter.use(mkDbConn);
+router.use(mkDbConn);
 
-// ------------------------
-// controllers
+const signup = require('../controllers/user/signup');
+const login = require('../controllers/user/login');
+const read = require('../controllers/user/read');
+const logout = require('../controllers/user/logout');
 
-const signupUser = require('../controllers/signupUser');
-const loginUser = require('../controllers/loginUser');
-const readUser = require('../controllers/readUser');
-const logoutUser = require('../controllers/logoutUser');
+router.post('/signup', signup);
+router.post('/login', login);
+router.get('/', checkLogin, read);
+router.get('/logout', checkLogin, logout);
 
-// ------------------------
-// routes
-
-userRouter.post('/signup', signupUser);
-userRouter.post('/login', loginUser);
-userRouter.get('/', validateLogin, readUser);
-userRouter.get('/logout', validateLogin, logoutUser);
-
-// ------------------------
-// export router
-
-module.exports = userRouter;
+module.exports = router;

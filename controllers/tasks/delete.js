@@ -16,3 +16,5 @@ const deleteTodo = (req, res) => {
     res.mk(1);
   });
 };
+
+module.exports = deleteTodo;

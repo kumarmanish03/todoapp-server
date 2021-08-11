@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const mysql = require('mysql');
-const jsonRes = require('../utils/jsonRes');
 
 const mkDbConn = (req, res, next) => {
   const conn = mysql.createConnection({
@@ -14,10 +13,10 @@ const mkDbConn = (req, res, next) => {
 
   let connErr = false;
   conn.connect(err => (connErr = err));
-  if (connErr) return jsonRes.err(res);
+  if (connErr) return res.mk(0);
 
   req.dbConn = conn;
   next();
 };
 
-exports = mkDbConn;
+module.exports = mkDbConn;

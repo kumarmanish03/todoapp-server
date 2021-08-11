@@ -1,5 +1,5 @@
-const readUser = (req, res) => {
-  const { userId } = req;
+const read = (req, res) => {
+  const { userId, dbConn } = req;
 
   const sql = `
     SELECT id, username, date_joined
@@ -7,11 +7,11 @@ const readUser = (req, res) => {
     WHERE id = ?
   `;
 
-  conn.query(sql, [userId], (err, [user]) => {
+  dbConn.query(sql, [userId], (err, [user]) => {
     if (err) return res.mk(0);
 
     res.mk(1, null, user);
   });
 };
 
-module.exports = readUser;
+module.exports = read;
