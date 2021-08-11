@@ -14,11 +14,11 @@ const remove = require('../controllers/tasks/delete');
 router.post('/', create);
 
 router.get('/', read.all);
-router.get('/:todoId', read.byId);
+router.get('/:taskId', read.byId);
 
-router.put('/body/:taskId', update.body);
-router.put('/start/:taskId', update.start);
-router.put('/end/:taskId', update.end);
+router.put('/:taskId/body', update.body);
+router.put('/:taskId/start', update.start);
+router.put('/:taskId/end', update.end);
 
 router.delete('/:taskId', remove);
 

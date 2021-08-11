@@ -1,19 +1,21 @@
-const createTodo = (req, res) => {
+const create = (req, res) => {
   const { dbConn, userId } = req;
-  const { title, desc } = req.body;
+  const { title, description } = req.body;
 
-  if (!title || !desc) return res.mk(0, 'Invalid body of Todo!');
+  if (!title) return res.mk(0, 'Invalid body of Task!');
 
   const sql = `
-    INSERT INTO todos (user_id, title, description)
+    INSERT INTO tasks (user_id, title, description)
     VALUES (?, ?, ?)
   `;
 
-  dbConn.query(sql, [userId, title, desc], (err, { insertId }) => {
+  const sqlParams = [userId, title, description ?? ''];
+
+  dbConn.query(sql, sqlParams, (err, { insertId }) => {
     if (err) return res.mk(0);
 
-    res.mk(1, null, { id: insertId });
+    res.mk(1, null, { taskId: insertId });
   });
 };
 
-module.exports = createTodo;
+module.exports = create;

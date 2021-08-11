@@ -1,66 +1,66 @@
-const updateTodoBody = (req, res) => {
-  const { dbConn, userId } = req;
-  const { todoId } = req.params;
-  const { title, desc } = res.body;
+const updateBody = (req, res) => {
+  const { userId, dbConn } = req;
+  const { taskId } = req.params;
+  const { title, description } = req.body;
 
   const sql = `
-    UPDATE todos
+    UPDATE tasks
     SET title = ?, description = ?
     WHERE id = ? AND user_id = ?
   `;
 
-  const sqlParams = [title, desc, todoId, userId];
+  const sqlParams = [title, description, taskId, userId];
 
   dbConn.query(sql, sqlParams, (err, { affectedRows }) => {
     if (err) return res.mk(0);
-    if (!affectedRows) return res.mk(0, 'Todo does not exist!');
+    if (!affectedRows) return res.mk(0, 'Task does not exist!');
 
     res.mk(1);
   });
 };
 
-const startTodo = (req, res) => {
+const start = (req, res) => {
   const { dbConn, userId } = req;
-  const { todoId } = req.params;
+  const { taskId } = req.params;
 
   const sql = `
-    UPDATE todos
+    UPDATE tasks
     SET start_time = NOW()
     WHERE id = ? AND user_id = ?
   `;
 
-  const sqlParams = [todoId, userId];
+  const sqlParams = [taskId, userId];
 
   dbConn.query(sql, sqlParams, (err, { affectedRows }) => {
     if (err) return res.mk(0);
-    if (!affectedRows) return res.mk(0, 'Todo does not exist!');
+    if (!affectedRows) return res.mk(0, 'Task does not exist!');
 
     res.mk(1);
   });
 };
 
-const endTodo = (req, res) => {
+const end = (req, res) => {
   const { dbConn, userId } = req;
-  const { todoId } = req.params;
+  const { taskId } = req.params;
 
   const sql = `
-    UPDATE todos
+    UPDATE tasks
     SET end_time = NOW()
     WHERE id = ? AND user_id = ?
   `;
 
-  const sqlParams = [todoId, userId];
+  const sqlParams = [taskId, userId];
 
   dbConn.query(sql, sqlParams, (err, { affectedRows }) => {
     if (err) return res.mk(0);
-    if (!affectedRows) return res.mk(0, 'Todo does not exist!');
+    if (!affectedRows) return res.mk(0, 'Task does not exist!');
 
     res.mk(1);
   });
 };
 
 module.exports = {
-  body: updateTodoBody,
-  start: startTodo,
-  end: endTodo,
+  body: updateBody,
+  start,
+  end,
 };

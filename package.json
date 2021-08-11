@@ -1,7 +1,7 @@
 {
-  "name": "todo-app",
+  "name": "task-app",
   "version": "1.0.0",
-  "description": "todo-app using nodejs for frontend and nodejs using expressjs",
+  "description": "task-app using nodejs for frontend and nodejs using expressjs",
   "main": "server.js",
   "scripts": {
     "client-install": "cd client && npm install",
@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [
-    "todo-app",
+    "task-app",
     "nodejs"
   ],
   "author": "Manish Kumar",

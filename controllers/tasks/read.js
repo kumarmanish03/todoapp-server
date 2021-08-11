@@ -1,9 +1,9 @@
-const readAllTodos = (req, res) => {
+const readAll = (req, res) => {
   const { dbConn, userId } = req;
 
   const sql = `
     SELECT *
-    FROM todos
+    FROM tasks
     WHERE user_id = ?
   `;
 
@@ -14,25 +14,25 @@ const readAllTodos = (req, res) => {
   });
 };
 
-const readTodoById = (req, res) => {
+const readById = (req, res) => {
   const { dbConn, userId } = req;
-  const { todoId } = req.params;
+  const { taskId } = req.params;
 
   const sql = `
     SELECT *
-    FROM todos
+    FROM tasks
     WHERE id = ? AND user_id = ?
   `;
 
-  dbConn.query(sql, [todoId, userId], (err, [todo]) => {
+  dbConn.query(sql, [taskId, userId], (err, [task]) => {
     if (err) return res.mk(0);
-    if (!todo) return res.mk(0, 'Todo does not exist!');
+    if (!task) return res.mk(0, 'Task does not exist!');
 
-    return res.mk(1, null, todo);
+    return res.mk(1, null, task);
   });
 };
 
 module.exports = {
-  all: readAllTodos,
-  byId: readTodoById,
+  all: readAll,
+  byId: readById,
 };
