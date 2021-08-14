@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const { ERR_USERNAME_NOT_FOUND, ERR_CREDS_UNMATCHED } = require('../../consts');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -15,13 +17,15 @@ const login = (req, res) => {
     WHERE username = ?
   `;
 
-  dbConn.query(sql, [username], (err, [user]) => {
+  dbConn.query(sql, [username], (err, results) => {
     if (err) return res.mk(0);
-    if (!user) return res.mk(0, 'Username does not exist!');
+
+    const [user] = results;
+    if (!user) return res.mk(0, ERR_USERNAME_NOT_FOUND);
 
     const passMatched = bcrypt.compareSync(password, user.password);
 
-    if (!passMatched) return res.mk(0, 'Username and Password does not match!');
+    if (!passMatched) return res.mk(0, ERR_CREDS_UNMATCHED);
 
     const token = jwt.sign({ userId: user.id }, PRIV_KEY);
     res.cookie('loginToken', token);

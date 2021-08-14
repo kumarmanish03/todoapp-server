@@ -7,9 +7,10 @@ const read = (req, res) => {
     WHERE id = ?
   `;
 
-  dbConn.query(sql, [userId], (err, [user]) => {
+  dbConn.query(sql, [userId], (err, results) => {
     if (err) return res.mk(0);
 
+    const [user] = results;
     res.mk(1, null, user);
   });
 };

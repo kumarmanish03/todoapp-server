@@ -1,3 +1,5 @@
+const { ERR_TASK_NOT_FOUND } = require('../../consts');
+
 const readAll = (req, res) => {
   const { dbConn, userId } = req;
 
@@ -24,10 +26,11 @@ const readById = (req, res) => {
     WHERE id = ? AND user_id = ?
   `;
 
-  dbConn.query(sql, [taskId, userId], (err, [task]) => {
+  dbConn.query(sql, [taskId, userId], (err, results) => {
     if (err) return res.mk(0);
-    if (!task) return res.mk(0, 'Task does not exist!');
+    if (!task) return res.mk(0, ERR_TASK_NOT_FOUND);
 
+    const [task] = results;
     return res.mk(1, null, task);
   });
 };

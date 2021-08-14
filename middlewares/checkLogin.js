@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const { ERR_LOGIN, ERR_LOGIN_TOKEN, ERR_LOGIN_INVALID } = require('../consts');
+
 const jwt = require('jsonwebtoken');
 
 const PRIV_KEY = process.env.PRIV_KEY;
@@ -8,11 +10,11 @@ const validateLogin = (req, res, next) => {
   const { dbConn } = req;
   const { loginToken } = req.cookies;
 
-  if (!loginToken) return res.mk(0, 'You are not logged in!');
+  if (!loginToken) return res.mk(0, ERR_LOGIN);
 
   const { userId } = jwt.verify(loginToken, PRIV_KEY);
 
-  if (typeof userId !== 'number') return res.mk(0, 'Invalid login token!');
+  if (typeof userId !== 'number') return res.mk(0, ERR_LOGIN_TOKEN);
 
   const sql = `
     SELECT COUNT(*) as user_exists
@@ -20,9 +22,11 @@ const validateLogin = (req, res, next) => {
     WHERE id = ?
   `;
 
-  dbConn.query(sql, [userId], (err, [{ user_exists }]) => {
+  dbConn.query(sql, [userId], (err, results) => {
     if (err) return res.mk(0);
-    if (!user_exists) return res.mk(0, 'Invalid login!');
+
+    const [{ user_exists }] = results;
+    if (!user_exists) return res.mk(0, ERR_LOGIN_INVALID);
 
     req.userId = userId;
     next();

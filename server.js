@@ -6,7 +6,12 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mkRes = require('./middlewares/mkRes');
 
-app.use(cors());
+const corsConfig = {
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

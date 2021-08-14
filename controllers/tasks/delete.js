@@ -1,3 +1,5 @@
+const { ERR_TASK_NOT_FOUND } = require('../../consts');
+
 const deleteTask = (req, res) => {
   const { dbConn, userId } = req;
   const { taskId } = req.params;
@@ -9,9 +11,11 @@ const deleteTask = (req, res) => {
 
   const sqlParams = [taskId, userId];
 
-  dbConn.query(sql, sqlParams, (err, { affectedRows }) => {
+  dbConn.query(sql, sqlParams, (err, results) => {
     if (err) return res.mk(0);
-    if (!affectedRows) return res.mk(0, 'Task does not exist!');
+
+    const { affectedRows } = results;
+    if (!affectedRows) return res.mk(0, ERR_TASK_NOT_FOUND);
 
     res.mk(1);
   });
