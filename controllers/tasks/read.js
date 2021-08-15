@@ -4,14 +4,13 @@ const readAll = (req, res) => {
   const { dbConn, userId } = req;
 
   const sql = `
-    SELECT *
+    SELECT *, CURRENT_TIMESTAMP as cur_time
     FROM tasks
     WHERE user_id = ?
   `;
 
   dbConn.query(sql, [userId], (err, results) => {
     if (err) return res.mk(0);
-
     res.mk(1, null, results);
   });
 };
@@ -21,7 +20,7 @@ const readById = (req, res) => {
   const { taskId } = req.params;
 
   const sql = `
-    SELECT *
+    SELECT *, CURRENT_TIMESTAMP() as current_time
     FROM tasks
     WHERE id = ? AND user_id = ?
   `;
