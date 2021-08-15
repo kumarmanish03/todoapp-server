@@ -31,7 +31,7 @@ const tasksRouter = require('./routers/tasks');
 app.use('/user', userRouter);
 app.use('/tasks', tasksRouter);
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.send('Welcome to NTasks-Advanced API!');
 });
 

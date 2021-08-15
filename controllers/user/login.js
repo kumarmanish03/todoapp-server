@@ -31,7 +31,6 @@ const login = (req, res) => {
 
     res.cookie('loginToken', token, {
       httpOnly: true,
-      sameSite: 'none',
       secure: !req.devEnv,
     });
 
