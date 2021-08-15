@@ -46,7 +46,7 @@ const signup = (req, res) => {
 
       res.cookie('loginToken', token, {
         httpOnly: true,
-        sameSite: req.devEnv,
+        sameSite: req.devEnv ? true : 'none',
         secure: !req.devEnv,
       });
 
