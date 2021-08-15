@@ -28,7 +28,13 @@ const login = (req, res) => {
     if (!passMatched) return res.mk(0, ERR_CREDS_UNMATCHED);
 
     const token = jwt.sign({ userId: user.id }, PRIV_KEY);
-    res.cookie('loginToken', token, { httpOnly: false });
+
+    res.cookie('loginToken', token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: !req.devEnv,
+    });
+
     res.mk(1);
   });
 };

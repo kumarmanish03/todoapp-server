@@ -16,6 +16,12 @@ app.use(cors(corsConfig));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use((req, _, next) => {
+  req.devEnv = app.get('env') === 'development';
+  next();
+});
+
 app.use(delay);
 app.use(mkRes);
 
@@ -25,7 +31,7 @@ const tasksRouter = require('./routers/tasks');
 app.use('/user', userRouter);
 app.use('/tasks', tasksRouter);
 
-app.get('/', (_, res) => {
+app.get('/', (req, res) => {
   res.send('Welcome to NTasks-Advanced API!');
 });
 
