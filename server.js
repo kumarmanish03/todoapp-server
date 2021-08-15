@@ -31,8 +31,8 @@ const tasksRouter = require('./routers/tasks');
 app.use('/user', userRouter);
 app.use('/tasks', tasksRouter);
 
-app.get('/', (_, res) => {
-  res.send('Welcome to NTasks-Advanced API!');
+app.get('/', (req, res) => {
+  res.send(`Welcome to NTasks-Advanced API! (${req.devEnv ? 'dev' : 'prod'})`);
 });
 
 const PORT = process.env.PORT || 5000;
