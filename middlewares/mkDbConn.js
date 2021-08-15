@@ -9,7 +9,6 @@ const mkDbConn = (req, res, next) => {
     password: process.env.MYSQL_PASS || '',
     database: process.env.MYSQL_NAME,
     port: process.env.MYSQL_PORT || 3306,
-    timezone: '+05:30',
   });
 
   let connErr = false;
