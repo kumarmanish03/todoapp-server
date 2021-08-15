@@ -43,7 +43,7 @@ const signup = (req, res) => {
 
       const { insertId } = results;
       const token = jwt.sign({ userId: insertId }, PRIV_KEY);
-      res.cookie('loginToken', token);
+      res.cookie('loginToken', token, { httpOnly: false });
       res.mk(1);
     });
   });
