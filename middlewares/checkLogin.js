@@ -8,7 +8,7 @@ const PRIV_KEY = process.env.PRIV_KEY;
 
 const validateLogin = (req, res, next) => {
   const { dbConn } = req;
-  const { loginToken } = req.cookies;
+  const { loginToken } = req.query;
 
   if (!loginToken) return res.mk(0, ERR_LOGIN);
 

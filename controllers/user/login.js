@@ -29,13 +29,7 @@ const login = (req, res) => {
 
     const token = jwt.sign({ userId: user.id }, PRIV_KEY);
 
-    res.cookie('loginToken', token, {
-      httpOnly: true,
-      sameSite: req.devEnv ? true : 'none',
-      secure: !req.devEnv,
-    });
-
-    res.mk(1);
+    res.mk(1, null, { loginToken: token });
   });
 };
 
