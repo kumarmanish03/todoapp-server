@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
 const delay = require('./middlewares/delay');
 const mkRes = require('./middlewares/mkRes');
 
@@ -15,7 +14,6 @@ const corsConfig = {
 app.use(cors(corsConfig));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 app.use((req, _, next) => {
   req.devEnv = app.get('env') === 'development';

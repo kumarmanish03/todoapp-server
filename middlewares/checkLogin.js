@@ -15,7 +15,6 @@ const validateLogin = (req, res, next) => {
   const { userId } = jwt.verify(loginToken, PRIV_KEY);
 
   if (typeof userId !== 'number') {
-    res.clearCookie('loginToken');
     return res.mk(0, ERR_LOGIN_TOKEN);
   }
 
@@ -31,7 +30,6 @@ const validateLogin = (req, res, next) => {
     const [{ user_exists }] = results;
 
     if (!user_exists) {
-      res.clearCookie('loginToken');
       return res.mk(0, ERR_LOGIN_INVALID);
     }
 
