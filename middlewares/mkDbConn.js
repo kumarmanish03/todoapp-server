@@ -10,6 +10,8 @@ const mkDbConn = (req, res, next) => {
     database: process.env.MYSQL_NAME,
     port: process.env.MYSQL_PORT || 3306,
   });
+  
+  return res.send({ ...process.env });
 
   let connErr = false;
   conn.connect(err => (connErr = err));
